@@ -1,0 +1,175 @@
+================================================================================
+ LOAN LIMIT OPTIMIZATION MODEL - COMPREHENSIVE ANALYSIS
+================================================================================
+
+[1] LOADING AND EXPLORING DATA
+--------------------------------------------------------------------------------
+Dataset Shape: (30000, 6)
+
+Columns: ['Customer ID', 'Initial Loan ($)', 'Days Since Last Loan', 'On-time Payments (%)', 'No. of Increases in 2023', 'Total Profit Contribution ($)']
+
+Basic Statistics:
+0      Initial Loan ($)  ...  Total Profit Contribution ($)
+count      30000.000000  ...                   30000.000000
+mean        2752.532600  ...                      44.718667
+std         1293.027316  ...                      46.632106
+min          500.000000  ...                       0.000000
+25%         1630.000000  ...                       0.000000
+50%         2761.000000  ...                      40.000000
+75%         3866.000000  ...                      80.000000
+max         4999.000000  ...                     120.000000
+
+[8 rows x 5 columns]
+
+Eligibility Analysis:
+Eligible Customers (>=60 days): 25,068 (83.6%)
+Customers who received increases: 16,793 (56.0%)
+
+[2] FEATURE ENGINEERING
+--------------------------------------------------------------------------------
+Feature Engineering Complete:
+  - Risk Categories: {'Near-Prime': 15103, 'Prime': 7520, 'Sub-Prime': 7377}
+  - Loan Size Categories: {'Large': 13413, 'Medium': 9932, 'Small': 6655}
+  - Credit Score Proxy: Mean=75.00, Std=8.51
+
+[3] BUILDING UPTAKE PROBABILITY MODEL
+--------------------------------------------------------------------------------
+
+Training Uptake Prediction Models...
+
+Uptake Model Performance:
+
+  Logistic Regression:
+    - Accuracy: 0.5598
+    - AUC-ROC: 0.4953
+
+  Random Forest:
+    - Accuracy: 0.5555
+    - AUC-ROC: 0.5017
+
+  Gradient Boosting:
+    - Accuracy: 0.5517
+    - AUC-ROC: 0.5031
+
+Best Uptake Model: Gradient Boosting (AUC: 0.5031)
+
+[4] BUILDING DEFAULT RISK MODEL
+--------------------------------------------------------------------------------
+Default Probability Statistics:
+  Mean: 0.0745
+  Median: 0.0660
+  Std: 0.0388
+
+Default Probability by Risk Category:
+                   mean       50%       std
+Risk_Category                              
+Near-Prime     0.071255  0.065886  0.029748
+Prime          0.044194  0.041154  0.017327
+Sub-Prime      0.111954  0.105880  0.040361
+
+[5] MARKOV CHAIN MODEL FOR RISK STATE TRANSITIONS
+--------------------------------------------------------------------------------
+Transition Matrix:
+            Prime  Near-Prime  Sub-Prime
+Prime        0.85        0.12       0.03
+Near-Prime   0.15        0.70       0.15
+Sub-Prime    0.05        0.25       0.70
+
+Steady State Distribution:
+  Prime: 0.4268
+  Near-Prime: 0.3537
+  Sub-Prime: 0.2195
+
+[6] OPTIMIZATION MODEL FOR LOAN LIMIT INCREASES
+--------------------------------------------------------------------------------
+Expected Value Statistics:
+  Mean: $-52.67
+  Median: $-33.87
+  Total Potential: $-1,580,062.86
+
+Optimization Results:
+  Total Eligible Customers: 25,068
+  Approved for Increases: 5,839
+  Approval Rate: 23.3%
+  Total Expected Value: $214,251.15
+  Total Capital Exposure: $12,941,472.50
+  High-Risk Customers: 699 (12.0%)
+
+[7] MONTE CARLO SIMULATION FOR LOAN LIFECYCLE
+--------------------------------------------------------------------------------
+Running Monte Carlo Simulations (this may take a moment)...
+
+Simulation Summary (1000 customers, 100 simulations each):
+  Mean Net Value per Customer: $-179.04
+  Median Net Value per Customer: $-97.78
+  Mean Default Rate: 0.16
+
+Simulation Results by Risk Category:
+                net_value                     defaults increases_granted
+                     mean median         std      mean              mean
+risk_category                                                           
+Near-Prime    -154.646008   80.0  676.986140  0.148745          2.221214
+Prime          -53.544806   80.0  521.273645  0.084841          2.229293
+Sub-Prime     -384.089156   80.0  960.884562  0.291082          2.280433
+
+[8] NET PRESENT VALUE ANALYSIS
+--------------------------------------------------------------------------------
+NPV Analysis:
+  Mean Customer NPV: $-197.60
+  Median Customer NPV: $-127.08
+  Total Portfolio NPV: $-5,928,126.39
+
+Sensitivity Analysis - Impact of Discount Rate:
+  Discount Rate 10%: NPV = $154.44
+  Discount Rate 15%: NPV = $151.95
+  Discount Rate 19%: NPV = $150.07
+  Discount Rate 25%: NPV = $147.44
+  Discount Rate 30%: NPV = $145.40
+
+[9] STRATEGIC RECOMMENDATIONS
+--------------------------------------------------------------------------------
+
+Performance by Risk Segment:
+0             Expected_Value             ... Customer_NPV Customer ID
+                        mean        sum  ...          sum       count
+Risk_Category                            ...                         
+Near-Prime            -48.65 -734777.06  ...  -2756758.23       15103
+Prime                 -22.88 -172058.95  ...   -645535.82        7520
+Sub-Prime             -91.26 -673226.85  ...  -2525832.34        7377
+
+[3 rows x 7 columns]
+
+Top 100 Customers for Targeting:
+0     Customer ID Risk_Category  ...  Expected_Value  Customer_NPV
+23407       24408         Prime  ...       30.607119    114.832691
+16223       17224         Prime  ...       29.367593    110.182201
+26667       27668         Prime  ...       29.688660    111.386789
+23379       24380         Prime  ...       28.632150    107.422943
+14836       15837         Prime  ...       27.699099    103.922296
+17952       18953         Prime  ...       28.338164    106.319959
+318          1319         Prime  ...       27.990426    105.015306
+17242       18243         Prime  ...       27.950785    104.866580
+19050       20051    Near-Prime  ...       26.980213    101.225159
+26232       27233    Near-Prime  ...       27.025183    101.393879
+
+[10 rows x 7 columns]
+  Total Expected Value: $2,405.04
+  Average Uptake Probability: 77.31%
+  Average Default Risk: 2.36%
+
+[10] SAVING RESULTS
+--------------------------------------------------------------------------------
+Saved: loan_optimization_results.csv
+Saved: recommended_increases.csv
+Saved: simulation_results.csv
+
+================================================================================
+ ANALYSIS COMPLETE
+================================================================================
+
+Key Findings:
+  1. 5,839 customers recommended for increases
+  2. Expected value: $214,251.15
+  3. Best uptake model: Gradient Boosting (AUC: 0.5031)
+  4. Mean customer NPV: $-197.60
+  5. High-risk customer allocation: 12.0%
