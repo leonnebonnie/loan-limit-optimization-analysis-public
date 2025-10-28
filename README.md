@@ -287,7 +287,7 @@ Data Operations Analyst | M-KOPA
 📱 +254 743 197 400  
 📍 Nairobi, Kenya
 
-**LinkedIn**: [linkedin.com/in/boniface-macharia](#)  
+**LinkedIn**: www.linkedin.com/in/machariabonifacekaranja
 **GitHub**: [github.com/bonifacemacharia](#)
 
 ---
